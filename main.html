@@ -11,58 +11,104 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            background-color: #f4f4f9;
+            background-color: #9BA7AF;
             margin: 0;
             padding: 20px;
         }
+        .gifeek {
+            display: block;
+            margin: 0 auto 20px auto; /* Centruje gifa i daje 20px odstępu od kontenera poniżej */
+            max-width: 350px;         /* Tutaj ustawiasz jak szeroki ma być Twój gif */
+            height: auto;             /* Zachowuje proporcje */
+        }
         .quiz-container {
             text-align: center;
-            background: white;
+            background: #CBD1D4;
             padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            max-width: 1200px;
-            width: 200%;
+            border-radius: 4px;
+            box-shadow: 0 0px 12px rgba(0,0,0,0.5);
+            max-width: 90vw;
+            width: 800px;
+            box-sizing: border-box;
         }
         img {
-            max-width: 200%;
-            max-height: 350px;
+            display: block;
+            margin: 0 auto 15px auto;
+            width: 100%;
+            max-width: 100%;
+            height: auto;
             border-radius: 8px;
-            margin-bottom: 15px;
         }
         /* Stylizacja bloku kodu */
         pre {
-            background-color: #272822;
-            color: #f8f8f2;
-            padding: 15px;
+            background-color: #EAEEF3;
+            padding: 12px;
             border-radius: 6px;
             text-align: left;
             overflow-x: auto;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
             margin: 15px 0;
+            width: 100%;              /* Kod zajmuje dokładnie tyle miejsca, ile daje mu kontener (czyli szerokość zdjęcia) */
+            box-sizing: border-box;
+            overflow-x: auto;         /* Jeśli linijka kodu będzie szersza niż zdjęcie, pojawi się scrollbar zamiast rozpychania ramki */
+            margin: 15px 0;
+            border: 1px solid #e1e4e8;
+        }
+        code {
+            font-family: 'Consolas', 'Courier New', Courier, monospace;
+            font-size: 14px;
+            line-height: 1;
+            background: transparent !important;
         }
         .input-group {
             margin: 15px 0;
         }
         input[type="number"] {
+            margin-top: 20px; 
+            font-size: 12px !important;
             padding: 10px;
             width: 50%;
-            border: 2px solid #ccc;
-            border-radius: 4px;
+            height: 1px;
+            border: none;
+            border-bottom: 2px solid #697A86;
+            outline: none;
+            text-align: center;
             font-size: 16px;
+            background: transparent;
+            -moz-appearance: textfield;
+        }
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }       
+        input[type="number"]::placeholder {
+            color: #697A86;           /* Szary kolor napisu "Tutaj wpisz rozwiązanie." */
+            font-size: 12px;
         }
         button {
             padding: 10px 15px;
-            background-color: #28a745;
-            color: white;
+            background-color: #CBD1D4;
+            color: rgb(0, 0, 0);
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 13px;
         }
-        button:hover {
-            background-color: #218838;
+        .przyciski-dolne-kontener {
+            margin-top: 20px;         /* Daje 20px wolnej przestrzeni między białą ramką a przyciskiem */
+            text-align: center;       /* Centruje przyciski w poziomie */
+            width: 100%;
+        }
+        .przyciski-dolne-kontener button {
+            width: 800px;
+            height: 18px;
+            max-width: 95vw;          /* Żeby na telefonie nie wystawał */
+            box-sizing: border-box;
+            box-shadow: 0 0px 12px rgba(0,0,0,0.5);
+            padding: 0px;            /* Nieco grubszy, wygodniejszy przycisk */
+        }
+        .przyciski-dolne-kontener button:hover {
+            box-shadow: 0 0px 12px rgba(0,0,0,1);
         }
         #wynik {
             margin-top: 15px;
@@ -75,19 +121,21 @@
     </style>
 </head>
 <body>
-
+<img src="kolos.gif" alt="Animacja" class="gifeek">
 <div class="quiz-container">
     <img id="losowy-obrazek" src="" alt="Ładowanie...">
     
     <pre><code id="kod-zadania"></code></pre>
     
     <div class="input-group">
-        <input type="number" step="any" id="odpowiedz-uzytkownika" placeholder="Wpisz wynik..." autocomplete="off">
-        <button id="przycisk-sprawdz" onclick="sprawdzOdpowiedz()">Sprawdź</button>
+        <input type="number" step="any" id="odpowiedz-uzytkownika" placeholder="Tutaj wpisz rozwiązanie." autocomplete="off">
     </div>
 
     <div id="wynik"></div>
-    <button id="przycisk-nastepny" class="hidden" onclick="losujPytanie()">Następne zadanie</button>
+</div> <div class="przyciski-dolne-kontener">
+        <button id="przycisk-sprawdz" onclick="sprawdzOdpowiedz()">Sprawdź!</button>
+        <button id="przycisk-nastepny" class="hidden" onclick="losujPytanie()">Następne zadanie</button>
+    </div>
 </div>
 
 <script>
@@ -1078,7 +1126,9 @@ end`
 
         // Podmiana zdjęcia i kodu
         document.getElementById('losowy-obrazek').src = aktualnePytanie.src;
-        document.getElementById('kod-zadania').textContent = aktualnePytanie.kod;
+        const elementKodu = document.getElementById('kod-zadania');
+        elementKodu.textContent = aktualnePytanie.kod;
+        hljs.highlightElement(elementKodu);
     }
 
     function sprawdzOdpowiedz() {
@@ -1092,7 +1142,7 @@ end`
         }
 
         const prawidlowaOdpowiedz = aktualnePytanie.odp;
-        const tolerancja = prawidlowaOdpowiedz / 20;
+        const tolerancja = Math.abs(prawidlowaOdpowiedz / 20);
         const roznica = Math.abs(wpisanaOdpowiedz - prawidlowaOdpowiedz);
 
         if (roznica <= tolerancja) {
